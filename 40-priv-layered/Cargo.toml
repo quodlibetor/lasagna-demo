@@ -1,0 +1,6 @@
+[package]
+name = "40-priv-layered"
+version = "0.1.0"
+authors = ["Brandon W Maister <quodlibetor@gmail.com>"]
+
+[dependencies]

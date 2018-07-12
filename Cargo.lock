@@ -1,4 +1,24 @@
 [[package]]
-name = "lasagna-cache"
+name = "01-module-functions"
+version = "0.1.0"
+
+[[package]]
+name = "02-pub-fields-cache"
+version = "0.1.0"
+
+[[package]]
+name = "03-priv-fields"
+version = "0.1.0"
+
+[[package]]
+name = "40-priv-layered"
+version = "0.1.0"
+
+[[package]]
+name = "50-traits"
+version = "0.1.0"
+
+[[package]]
+name = "60-dyn-traits"
 version = "0.1.0"
 

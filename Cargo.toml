@@ -1,6 +1,9 @@
-[package]
-name = "lasagna-cache"
-version = "0.1.0"
-authors = ["Brandon W Maister <bwm@knewton.com>"]
-
-[dependencies]
+[workspace]
+members = [
+    "10-module-functions",
+    "20-pub-fields-cache",
+    "30-priv-fields",
+    "40-priv-layered",
+    "50-traits",
+    "60-dyn-traits",
+]
