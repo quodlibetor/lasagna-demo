@@ -1,4 +1,7 @@
+cargo-features = ["edition"]
+
 [package]
+edition = "2018"
 name = "70-multi-cache"
 version = "0.1.0"
 authors = ["Brandon W Maister <quodlibetor@gmail.com>"]

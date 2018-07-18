@@ -5,7 +5,7 @@ use crate::cache::{Cache, CacheInsert};
 pub struct CacheMetrics<K, V, C>
 where
     C: Cache<K, V>,
-    K: Clone
+    K: Clone,
 {
     cache: C,
     hits: u64,

@@ -1,0 +1,9 @@
+cargo-features = ["edition"]
+
+[package]
+edition = "2018"
+name = "multi-crate"
+version = "0.1.0"
+authors = ["Brandon W Maister <quodlibetor@gmail.com>"]
+
+[dependencies]

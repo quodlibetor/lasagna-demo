@@ -43,10 +43,7 @@ where
     }
 
     fn insert(&mut self, key: K, val: V) {
-        for cache in
-        self.rest
-            .iter_mut()
-            .rev() {
+        for cache in self.rest.iter_mut().rev() {
             cache.insert(key.clone(), val.clone());
         }
         self.first.insert(key, val);

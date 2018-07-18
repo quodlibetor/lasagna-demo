@@ -7,8 +7,8 @@ mod hash_cache;
 
 use crate::cache::Cache;
 use crate::cache_metrics::CacheMetrics;
-use crate::hash_cache::HashCache;
 use crate::cascade_cache::CascadeCache;
+use crate::hash_cache::HashCache;
 
 fn main() {
     let mut cache = CacheMetrics::with(CascadeCache::with(Box::new(HashCache::new())));

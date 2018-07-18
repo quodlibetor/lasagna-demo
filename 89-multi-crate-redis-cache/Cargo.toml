@@ -1,0 +1,11 @@
+cargo-features = ["edition"]
+
+[package]
+edition = "2018"
+name = "redis-cache"
+version = "0.1.0"
+authors = ["Brandon W Maister <bwm@knewton.com>"]
+
+[dependencies]
+multi-crate = { version = "0.1", path = "../80-multi-crate" }
+redis = "0.8.0"

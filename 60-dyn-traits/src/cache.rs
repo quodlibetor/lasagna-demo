@@ -3,10 +3,7 @@ pub enum CacheInsert {
     Inserted,
 }
 
-pub trait Cache<K, V>
-where
-    K: Clone,
-{
+pub trait Cache<K, V> {
     fn get(&self, key: &K) -> Option<&V>;
     fn insert(&mut self, key: K, val: V);
     fn insert_if_missing(&mut self, key: &K, creator: Box<dyn FnMut(&K) -> V>) -> CacheInsert;

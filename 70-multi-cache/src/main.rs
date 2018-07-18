@@ -1,16 +1,16 @@
 #![feature(rust_2018_preview, nll)]
-
-use redis::Command;
+#![warn(rust_2018_compatibility, rust_2018_idioms)]
 
 use crate::cache::Cache;
 use crate::cache_metrics::CacheMetrics;
-use crate::hash_cache::HashCache;
 use crate::cascade_cache::CascadeCache;
+use crate::hash_cache::HashCache;
 
 mod cache;
 mod cache_metrics;
 mod cascade_cache;
 mod hash_cache;
+mod redis_cache;
 
 fn main() {
     let mut cache = CacheMetrics::with(CascadeCache::with(Box::new(HashCache::new())));

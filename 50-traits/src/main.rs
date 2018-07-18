@@ -1,12 +1,12 @@
 #![feature(rust_2018_preview, nll)]
 
 mod cache;
-mod hash_cache;
 mod cache_metrics;
+mod hash_cache;
 
 use crate::cache::Cache;
-use crate::hash_cache::HashCache;
 use crate::cache_metrics::CacheMetrics;
+use crate::hash_cache::HashCache;
 
 fn main() {
     let mut cache = CacheMetrics::with(HashCache::new());
