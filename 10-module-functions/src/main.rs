@@ -1,17 +1,13 @@
 #![feature(rust_2018_preview)]
+#![warn(rust_2018_compatibility, rust_2018_idioms)]
+
+use std::collections::HashMap;
 
 mod cache {
     use std::collections::HashMap;
     use std::hash::Hash;
 
     type CacheMap<K, V> = HashMap<K, V>;
-
-    crate fn new<K, V>() -> CacheMap<K, V>
-    where
-        K: Hash + Eq + Clone,
-    {
-        CacheMap::new()
-    }
 
     crate fn get_or_insert<K, V>(
         cache: &mut CacheMap<K, V>,
@@ -35,12 +31,9 @@ mod cache {
     }
 }
 
-#[derive(Debug, PartialEq)]
-struct HardToCreate(usize);
-
 fn main() {
-    let mut cachemap = cache::new();
+    let mut cachemap = HashMap::new();
 
-    let val = cache::get_or_insert(&mut cachemap, "one", |_| HardToCreate(1));
-    assert_eq!(val, &HardToCreate(1));
+    let val = cache::get_or_insert(&mut cachemap, "one", |k| k.len());
+    assert_eq!(val, &3);
 }

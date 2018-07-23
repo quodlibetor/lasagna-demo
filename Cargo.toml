@@ -6,7 +6,7 @@ members = [
     "40-priv-layered",
     "50-traits",
     "60-dyn-traits",
-    "70-multi-cache",
+    # "70-multi-cache",
     # "75-multi-cache-multi-trait",
     "80-multi-crate",
     "81-hash-cache",

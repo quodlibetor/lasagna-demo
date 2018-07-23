@@ -1,13 +1,13 @@
 [[package]]
-name = "01-module-functions"
-version = "0.1.0"
-
-[[package]]
 name = "02-pub-fields-cache"
 version = "0.1.0"
 
 [[package]]
 name = "03-priv-fields"
+version = "0.1.0"
+
+[[package]]
+name = "10-module-functions"
 version = "0.1.0"
 
 [[package]]
@@ -21,13 +21,6 @@ version = "0.1.0"
 [[package]]
 name = "60-dyn-traits"
 version = "0.1.0"
-
-[[package]]
-name = "70-multi-cache"
-version = "0.1.0"
-dependencies = [
- "redis 0.8.0 (registry+https://github.com/rust-lang/crates.io-index)",
-]
 
 [[package]]
 name = "hash-cache"
