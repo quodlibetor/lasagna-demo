@@ -4,21 +4,21 @@ mod cache {
     use std::collections::HashMap;
     use std::hash::Hash;
 
-    pub struct Cache<K: Hash + Eq, V> {
+    pub(crate) struct Cache<K: Hash + Eq, V> {
         map: HashMap<K, V>,
         hits: usize,
         misses: usize,
     }
 
     impl<K: Hash + Eq + Clone, V> Cache<K, V> {
-        pub fn new() -> Cache<K, V> {
+        pub(crate) fn new() -> Cache<K, V> {
             Cache {
                 map: HashMap::new(),
                 hits: 0,
                 misses: 0,
             }
         }
-        pub fn get_or_insert(&mut self, key: K, creator: impl FnOnce(&K) -> V) -> &V {
+        pub(crate) fn get_or_insert(&mut self, key: K, creator: impl FnOnce(&K) -> V) -> &V {
             self.ensure_exists(&key, creator);
             self.map.get(&key).unwrap()
         }
@@ -32,11 +32,11 @@ mod cache {
             }
         }
 
-        pub fn hits(&self) -> usize {
+        pub(crate) fn hits(&self) -> usize {
             self.hits
         }
 
-        pub fn misses(&self) -> usize {
+        pub(crate) fn misses(&self) -> usize {
             self.misses
         }
     }

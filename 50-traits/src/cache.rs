@@ -1,18 +1,14 @@
-pub enum CacheInsert {
+pub(crate) enum Insert {
     AlreadyPresent,
     Inserted,
 }
 
-pub trait Cache<K, V> {
+pub(crate) trait Cache<K, V> {
     fn get(&self, key: &K) -> Option<&V>;
-    fn insert_if_missing(&mut self, key: &K, creator: impl FnOnce(&K) -> V) -> CacheInsert
-    where
-        K: Clone;
 
-    fn get_or_insert(&mut self, key: &K, creator: impl FnOnce(&K) -> V) -> &V
-    where
-        K: Clone,
-    {
+    fn insert_if_missing(&mut self, key: &K, creator: impl FnOnce(&K) -> V) -> Insert;
+
+    fn get_or_insert(&mut self, key: &K, creator: impl FnOnce(&K) -> V) -> &V {
         self.insert_if_missing(key, creator);
         self.get(&key).unwrap()
     }

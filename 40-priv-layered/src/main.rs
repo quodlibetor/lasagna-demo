@@ -4,37 +4,37 @@ mod cache {
     use std::collections::HashMap;
     use std::hash::Hash;
 
-    pub enum CacheInsert {
+    pub(crate) enum Insert {
         AlreadyPresent,
         Inserted,
     }
 
-    pub struct Cache<K: Hash + Eq, V> {
+    pub(crate) struct Cache<K: Hash + Eq, V> {
         map: HashMap<K, V>,
     }
 
     impl<K: Hash + Eq + Clone, V> Cache<K, V> {
-        pub fn new() -> Cache<K, V> {
+        pub(crate) fn new() -> Cache<K, V> {
             Cache {
                 map: HashMap::new(),
             }
         }
 
-        pub fn get_or_insert(&mut self, key: K, creator: impl FnOnce(&K) -> V) -> &V {
+        pub(crate) fn get_or_insert(&mut self, key: K, creator: impl FnOnce(&K) -> V) -> &V {
             self.insert_if_missing(&key, creator);
             self.map.get(&key).unwrap()
         }
 
-        pub fn get(&self, key: &K) -> Option<&V> {
+        pub(crate) fn get(&self, key: &K) -> Option<&V> {
             self.map.get(key)
         }
 
-        pub fn insert_if_missing(&mut self, key: &K, creator: impl FnOnce(&K) -> V) -> CacheInsert {
+        pub(crate) fn insert_if_missing(&mut self, key: &K, creator: impl FnOnce(&K) -> V) -> Insert {
             if !self.map.contains_key(&key) {
                 self.map.insert(key.clone(), creator(&key));
-                CacheInsert::AlreadyPresent
+                Insert::AlreadyPresent
             } else {
-                CacheInsert::Inserted
+                Insert::Inserted
             }
         }
     }
@@ -43,16 +43,16 @@ mod cache {
 mod cache_metrics {
     use std::hash::Hash;
 
-    use crate::cache::{Cache, CacheInsert::*};
+    use cache::{Cache, Insert};
 
-    pub struct CacheMetrics<K: Hash + Eq + Clone, V> {
+    pub(crate) struct CacheMetrics<K: Hash + Eq + Clone, V> {
         cache: Cache<K, V>,
         hits: u64,
         misses: u64,
     }
 
     impl<K: Hash + Eq + Clone, V> CacheMetrics<K, V> {
-        pub fn new() -> CacheMetrics<K, V> {
+        pub(crate) fn new() -> CacheMetrics<K, V> {
             CacheMetrics {
                 cache: Cache::new(),
                 hits: 0,
@@ -60,19 +60,19 @@ mod cache_metrics {
             }
         }
 
-        pub fn get_or_insert(&mut self, key: K, creator: impl FnOnce(&K) -> V) -> &V {
+        pub(crate) fn get_or_insert(&mut self, key: K, creator: impl FnOnce(&K) -> V) -> &V {
             match self.cache.insert_if_missing(&key, creator) {
-                AlreadyPresent => self.hits += 1,
-                Inserted => self.misses += 1,
+                Insert::AlreadyPresent => self.hits += 1,
+                Insert::Inserted => self.misses += 1,
             }
             self.cache.get(&key).unwrap()
         }
 
-        pub fn hits(&self) -> u64 {
+        pub(crate) fn hits(&self) -> u64 {
             self.hits
         }
 
-        pub fn misses(&self) -> u64 {
+        pub(crate) fn misses(&self) -> u64 {
             self.misses
         }
     }

@@ -1,14 +1,15 @@
 #![feature(rust_2018_preview, nll)]
 
+pub use cache::{Cache, Insert};
+
+use cache_metrics::CacheMetrics;
+use cascade_cache::CascadeCache;
+use hash_cache::HashCache;
+
 mod cache;
 mod cache_metrics;
 mod cascade_cache;
 mod hash_cache;
-
-use crate::cache::Cache;
-use crate::cache_metrics::CacheMetrics;
-use crate::cascade_cache::CascadeCache;
-use crate::hash_cache::HashCache;
 
 fn main() {
     let mut cache = CacheMetrics::with(CascadeCache::with(Box::new(HashCache::new())));

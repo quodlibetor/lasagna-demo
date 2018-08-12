@@ -1,15 +1,15 @@
 use std::collections::HashMap;
 use std::hash::Hash;
 
-use crate::cache::Cache;
-use crate::cache::CacheInsert;
+use cache::Cache;
+use cache::Insert;
 
-pub struct HashCache<K: Hash + Eq, V> {
+pub(crate) struct HashCache<K: Hash + Eq, V> {
     map: HashMap<K, V>,
 }
 
 impl<K: Hash + Eq, V> HashCache<K, V> {
-    pub fn new() -> HashCache<K, V> {
+    pub(crate) fn new() -> HashCache<K, V> {
         HashCache {
             map: HashMap::new(),
         }
@@ -18,12 +18,9 @@ impl<K: Hash + Eq, V> HashCache<K, V> {
 
 impl<K, V> Cache<K, V> for HashCache<K, V>
 where
-    K: Hash + Eq,
+    K: Hash + Eq + Clone,
 {
-    fn get_or_insert(&mut self, key: &K, creator: impl FnOnce(&K) -> V) -> &V
-    where
-        K: Clone,
-    {
+    fn get_or_insert(&mut self, key: &K, creator: impl FnOnce(&K) -> V) -> &V {
         self.insert_if_missing(&key, creator);
         self.map.get(&key).unwrap()
     }
@@ -32,15 +29,12 @@ where
         self.map.get(key)
     }
 
-    fn insert_if_missing(&mut self, key: &K, creator: impl FnOnce(&K) -> V) -> CacheInsert
-    where
-        K: Clone,
-    {
+    fn insert_if_missing(&mut self, key: &K, creator: impl FnOnce(&K) -> V) -> Insert {
         if !self.map.contains_key(&key) {
             self.map.insert(key.clone(), creator(&key));
-            CacheInsert::AlreadyPresent
+            Insert::Inserted
         } else {
-            CacheInsert::Inserted
+            Insert::AlreadyPresent
         }
     }
 }
