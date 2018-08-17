@@ -1,4 +1,4 @@
-use crate::{cache::CacheInsert, Cache};
+use {cache::Insert, Cache};
 
 pub enum RemoteInsert<V> {
     Present(V),
@@ -26,14 +26,14 @@ trait DoImpl {}
 
 pub trait IntoCache<K, V> {
     type C: Cache<K, V>;
-    fn into_cache(self) -> Self::C; 
-    fn as_cache(&self) -> &Self::C; 
-    fn as_mut_cache(&mut self) -> &mut Self::C; 
+    fn into_cache(self) -> Self::C;
+    fn as_cache(&self) -> &Self::C;
+    fn as_mut_cache(&mut self) -> &mut Self::C;
 }
 
 impl<T, K, V> RemoteCache<K, V> for T
 where
-    T: IntoCache<K, V>,
+    T: IntoCache<K, V> + 'static,
     V: Clone,
     K: Clone,
 {
@@ -52,7 +52,7 @@ where
         key: &K,
         creator: Box<dyn FnMut(&K) -> V>,
     ) -> Infallible<RemoteInsert<V>> {
-        use self::CacheInsert::*;
+        use self::Insert::*;
         match self.as_mut_cache().insert_if_missing(key, creator) {
             AlreadyPresent => Ok(RemoteInsert::Present(self.as_cache().get(key).unwrap().clone())),
             Inserted => Ok(RemoteInsert::Inserted(self.as_cache().get(key).unwrap().clone())),

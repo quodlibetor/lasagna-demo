@@ -1,12 +1,12 @@
 #![feature(rust_2018_preview, nll)]
 #![warn(rust_2018_compatibility, rust_2018_idioms)]
 
-use crate::cache::Cache;
-use crate::remote_cache::RemoteCache;
+use cache::Cache;
+use remote_cache::RemoteCache;
 
-use crate::cache_metrics::CacheMetrics;
-use crate::cascade_cache::CascadeCache;
-use crate::hash_cache::HashCache;
+use cache_metrics::CacheMetrics;
+use cascade_cache::CascadeCache;
+use hash_cache::HashCache;
 
 mod cache;
 mod remote_cache;

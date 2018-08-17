@@ -8,4 +8,5 @@ authors = ["Brandon W Maister <bwm@knewton.com>"]
 
 [dependencies]
 multi-crate = { version = "0.1", path = "../80-multi-crate" }
+remote-cache = { version = "0.1", path = "../82-remote-cache" }
 redis = "0.8.0"

@@ -1,4 +1,4 @@
-pub enum CacheInsert {
+pub enum Insert {
     AlreadyPresent,
     Inserted,
 }

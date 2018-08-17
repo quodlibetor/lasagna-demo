@@ -1,6 +1,6 @@
 use redis::Commands;
 
-use crate::{Cache, CacheInsert};
+use {Cache, Insert};
 
 pub struct RedisCache {
     conn: redis::Connection,
@@ -25,13 +25,13 @@ where
     fn insert(&mut self, key: K, val: V) {
         self.conn.set(key, val).unwrap()
     }
-    fn insert_if_missing(&mut self, key: &K, creator: Box<dyn FnMut(&K) -> V>) -> CacheInsert {
+    fn insert_if_missing(&mut self, key: &K, creator: Box<dyn FnMut(&K) -> V>) -> Insert {
         if self.get(key).is_some() {
-            return CacheInsert::AlreadyPresent;
+            return Insert::AlreadyPresent;
         }
         let val = creator(key);
         self.insert(key.clone(), val);
-        CacheInsert::Inserted
+        Insert::Inserted
     }
 
     fn get_or_insert(&mut self, key: &K, creator: Box<dyn FnMut(&K) -> V>) -> &V {

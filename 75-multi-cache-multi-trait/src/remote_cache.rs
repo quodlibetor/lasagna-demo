@@ -1,4 +1,4 @@
-use crate::{cache::CacheInsert, Cache};
+use {cache::Insert, Cache};
 
 crate enum RemoteInsert<V> {
     Present(V),
@@ -42,7 +42,7 @@ where
         key: &K,
         creator: Box<dyn FnMut(&K) -> V>,
     ) -> Infallible<RemoteInsert<V>> {
-        use self::CacheInsert::*;
+        use self::Insert::*;
         match <Self as Cache<K, V>>::insert_if_missing(self, key, creator) {
             AlreadyPresent => Ok(RemoteInsert::Present(self.get(key).unwrap().clone())),
             Inserted => Ok(RemoteInsert::Inserted(self.get(key).unwrap().clone())),

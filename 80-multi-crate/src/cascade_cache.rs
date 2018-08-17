@@ -1,4 +1,4 @@
-use crate::{cache::CacheInsert, Cache};
+use {cache::Insert, Cache};
 
 pub struct CascadeCache<K, V>
 where
@@ -49,20 +49,20 @@ where
         self.first.insert(key, val);
     }
 
-    fn insert_if_missing(&mut self, key: &K, mut creator: Box<dyn FnMut(&K) -> V>) -> CacheInsert {
+    fn insert_if_missing(&mut self, key: &K, mut creator: Box<dyn FnMut(&K) -> V>) -> Insert {
         if self.first.get(key).is_some() {
-            return CacheInsert::AlreadyPresent;
+            return Insert::AlreadyPresent;
         }
         for cache in self.rest.iter() {
             if cache.get(key).is_some() {
-                return CacheInsert::AlreadyPresent;
+                return Insert::AlreadyPresent;
             }
         }
 
         let val = creator(key);
         self.insert(key.clone(), val);
 
-        CacheInsert::Inserted
+        Insert::Inserted
     }
 
     fn get_or_insert(&mut self, key: &K, creator: Box<dyn FnMut(&K) -> V>) -> &V {

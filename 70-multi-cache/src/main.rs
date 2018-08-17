@@ -1,10 +1,10 @@
 #![feature(rust_2018_preview, nll)]
 #![warn(rust_2018_compatibility, rust_2018_idioms)]
 
-use crate::cache::Cache;
-use crate::cache_metrics::CacheMetrics;
-use crate::cascade_cache::CascadeCache;
-use crate::hash_cache::HashCache;
+use cache::Cache;
+use cache_metrics::CacheMetrics;
+use cascade_cache::CascadeCache;
+use hash_cache::HashCache;
 
 mod cache;
 mod cache_metrics;

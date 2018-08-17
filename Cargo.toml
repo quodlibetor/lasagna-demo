@@ -8,7 +8,8 @@ members = [
     "60-dyn-traits",
     # "70-multi-cache",
     # "75-multi-cache-multi-trait",
-    "80-multi-crate",
-    "81-hash-cache",
-    "89-multi-crate-redis-cache",
+    # "80-multi-crate",
+    # "81-hash-cache",
+    # "82-remote-cache",
+    # "89-multi-crate-redis-cache",
 ]

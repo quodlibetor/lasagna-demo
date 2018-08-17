@@ -1,8 +1,8 @@
 use std::collections::HashMap;
 use std::hash::Hash;
 
-use crate::cache::Cache;
-use crate::cache::CacheInsert;
+use cache::Cache;
+use cache::Insert;
 
 pub struct HashCache<K: Hash + Eq, V> {
     map: HashMap<K, V>,
@@ -36,16 +36,16 @@ where
         self.map.insert(key.clone(), val);
     }
 
-    fn insert_if_missing(&mut self, key: &K, mut creator: Box<dyn FnMut(&K) -> V>) -> CacheInsert
+    fn insert_if_missing(&mut self, key: &K, mut creator: Box<dyn FnMut(&K) -> V>) -> Insert
     where
         K: Clone,
     {
         if !self.map.contains_key(&key) {
             let created = creator(&key);
             self.insert(key.clone(), created);
-            CacheInsert::AlreadyPresent
+            Insert::AlreadyPresent
         } else {
-            CacheInsert::Inserted
+            Insert::Inserted
         }
     }
 }

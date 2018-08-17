@@ -1,14 +1,12 @@
 #![feature(rust_2018_preview, nll)]
 #![warn(rust_2018_compatibility, rust_2018_idioms)]
 
-pub use crate::cache::{Cache, CacheInsert};
-pub use crate::remote_cache::{RemoteCache, IntoCache, RemoteInsert, ImplPls, DoNotImpl};
+pub use cache::{Cache, Insert};
 
-pub use crate::cache_metrics::CacheMetrics;
-pub use crate::cascade_cache::CascadeCache;
+pub use cache_metrics::CacheMetrics;
+pub use cascade_cache::CascadeCache;
 
 mod cache;
-mod remote_cache;
 
 mod cache_metrics;
 mod cascade_cache;

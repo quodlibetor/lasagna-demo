@@ -1,6 +1,6 @@
 use std::marker::PhantomData;
 
-use crate::cache::{Cache, CacheInsert};
+use cache::{Cache, Insert};
 
 pub struct CacheMetrics<K, V, C>
 where
@@ -43,14 +43,14 @@ impl<K: Clone, V, C: Cache<K, V>> Cache<K, V> for CacheMetrics<K, V, C> {
         self.cache.insert(key, val);
     }
 
-    fn insert_if_missing(&mut self, key: &K, creator: Box<dyn FnMut(&K) -> V>) -> CacheInsert {
+    fn insert_if_missing(&mut self, key: &K, creator: Box<dyn FnMut(&K) -> V>) -> Insert {
         self.cache.insert_if_missing(&key, creator)
     }
 
     fn get_or_insert(&mut self, key: &K, creator: Box<dyn FnMut(&K) -> V>) -> &V {
         match self.insert_if_missing(&key, creator) {
-            CacheInsert::AlreadyPresent => self.hits += 1,
-            CacheInsert::Inserted => self.misses += 1,
+            Insert::AlreadyPresent => self.hits += 1,
+            Insert::Inserted => self.misses += 1,
         }
         self.get(&key).unwrap()
     }

@@ -3,7 +3,7 @@
 
 use redis::{Commands, RedisError, RedisResult};
 
-use multi_crate::{RemoteCache, CacheInsert};
+use remote_cache::{RemoteCache, RemoteInsert};
 
 pub struct RedisCache {
     conn: redis::Connection,
@@ -24,20 +24,22 @@ where
     V: redis::ToRedisArgs + redis::FromRedisValue,
 {
     type Err = RedisError;
-    fn get(&self, key: &K) -> RedisResult<Option<&V>> {
+    fn get(&self, key: &K) -> RedisResult<Option<V>> {
         self.conn.get(*key).unwrap()
     }
 
     fn insert(&mut self, key: K, val: V) {
         self.conn.set(key, val).unwrap()
     }
-    fn insert_if_missing(&mut self, key: &K, creator: Box<dyn FnMut(&K) -> V>) -> CacheInsert {
-        if self.get(key).is_some() {
-            return CacheInsert::AlreadyPresent;
+    fn insert_if_missing(&mut self, key: &K, creator: Box<dyn FnMut(&K) -> V>) -> RedisResult<RemoteInsert<V>> {
+        match self.get(key)? {
+            Some(val) => Ok(RemoteInsert::AlreadyPresent(val)),
+            None => {
+                let val = creator(key);
+                self.insert(key.clone(), val);
+                RemoteInsert::Inserted(val)
+            }
         }
-        let val = creator(key);
-        self.insert(key.clone(), val);
-        CacheInsert::Inserted
     }
 
     fn get_or_insert(&mut self, key: &K, creator: Box<dyn FnMut(&K) -> V>) -> &V {
