@@ -1,0 +1,10 @@
+cargo-features = ["edition"]
+
+[package]
+edition = "2018"
+name = "remote-cache"
+version = "0.1.0"
+authors = ["Brandon W Maister <quodlibetor@gmail.com>"]
+
+[dependencies]
+multi-crate = { path = "../80-multi-crate" }
